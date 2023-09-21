@@ -1,8 +1,8 @@
-# BDIX OpenWRT
+# BDIX Redsocks OpenWRT
 Redsocks is a proxy tunneling extension. However, I found a very rare tutorial about how to configure Redsocks on an OpenWRT router. With this tutorial, we can use it on our OpenWRT router easily. It will be helpful for BDIX bypass users of Bangladesh who are using the socks5 proxy. To install and configure Redsocks, ensure you have installed OpenWrt on your router. Then run commands as follows:
 
 # One command run installation
-Run the following command to install Redsocks automatically:
+Run the following command to install BDIX proxy extension automatically:
 ```
 cd /tmp && wget https://github.com/emonbhuiyan/BDIX/raw/main/install.sh && chmod +x install.sh && clear && sh install.sh && rm install.sh && cd / && clear
 ```
@@ -14,29 +14,29 @@ vi /etc/bdix.conf
 ```
 After the update press `ESC` key then `:wq` to save or `:q!` to discard changes
 
-# How to start and stop Redsocks:
+# How to start and stop BDIX:
 
-### To start Redsocks proxy bypass
+### To start BDIX proxy bypass
 ```
 service bdix start
 ```
 
-### To stop Redsocks proxy bypass
+### To stop BDIX proxy bypass
 ```
 service bdix stop
 ```
 
-### To restart Redsocks proxy bypass
+### To restart BDIX proxy bypass
 ```
 service bdix restart
 ```
 
-### To enable Redsocks auto boot-start proxy
+### To enable BDIX auto boot-start proxy
 ```
 service bdix enable
 ```
 
-### To disable Redsocks auto boot-start proxy
+### To disable BDIX auto boot-start proxy
 ```
 service bdix disable
 ```
