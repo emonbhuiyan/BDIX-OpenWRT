@@ -4,13 +4,13 @@ Redsocks is a proxy tunneling extension. However, I found a very rare tutorial a
 # One command run installation
 Run the following command to install Redsocks automatically:
 ```
-cd /tmp && wget https://github.com/emonbhuiyan/Redsocks-OpenWRT/raw/main/install.sh && chmod +x install.sh && clear && sh install.sh && rm install.sh && cd / && clear
+cd /tmp && wget https://github.com/emonbhuiyan/BDIX/raw/main/install.sh && chmod +x install.sh && clear && sh install.sh && rm install.sh && cd / && clear
 ```
 Just run it and wait for completion. And enjoy. [Click here to learn step by step manual installation](#manual-installation-step-by-step)
 
 ## To update proxy IP, Port, Username & Password
 ```
-vi /etc/redsocks.conf
+vi /etc/bdix.conf
 ```
 After the update press `ESC` key then `:wq` to save or `:q!` to discard changes
 
