@@ -55,7 +55,7 @@ opkg install iptables iptables-mod-nat-extra redsocks
 
 ### Step 3: Then run this line
 ```
-service redsocks stop && service redsocks disable && cd /etc && wget https://github.com/emonbhuiyan/BDIX/raw/main/bdix.conf && cd /etc/init.d && wget https://github.com/emonbhuiyan/BDIX/raw/main/bdix && chmod +x /etc/init.d/bdix && rm /etc/redsocks.conf && rm /etc/init.d/redsocks
+service redsocks stop && mv /etc/redsocks.conf /etc/redsocks.conf.bkp && cd /etc && wget https://github.com/emonbhuiyan/BDIX-OpenWRT/raw/main/bdix.conf && mv /etc/init.d/redsocks /etc/init.d/redsocks.bkp && cd /etc/init.d && wget https://github.com/emonbhuiyan/BDIX-OpenWRT/raw/main/bdix && chmod +x /etc/init.d/bdix
 ```
 [Click here to install with one command run](#one-command-run-installation)
 
