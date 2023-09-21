@@ -14,6 +14,8 @@ vi /etc/bdix.conf
 ```
 After the update press `esc` key then `:wq` to save or `:q!` to discard changes
 
+![Update proxy IP, Port, Username & Password](https://i.imgur.com/SPPiuBd.png)
+
 # How to start and stop BDIX:
 
 ### To start BDIX proxy bypass
