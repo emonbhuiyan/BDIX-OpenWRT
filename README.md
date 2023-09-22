@@ -1,4 +1,4 @@
-# BDIX Redsocks OpenWRT
+# BDIX Bypass Service on OpenWRT Router
 BDIX bypass become very popular in Bangladesh, especially in rural and urban areas. Socks5 is one of the popular proxy protocols here. What if we could use Socks5 proxy on our router? Yeah, we can use Socks5 proxy on the OpenWRT router with Redsocks. I customized Redsocks as BDIX, especially for BDIX proxy users. However, I found a very rare tutorial about how to configure Socks5 proxy on an OpenWRT router. With this tutorial, we can use it on our OpenWRT router easily. To install and configure Socks5 proxy, ensure you have installed OpenWrt on your router. Then run commands as follows:
 
 # BDIX proxy service installation:
