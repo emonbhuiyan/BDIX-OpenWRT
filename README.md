@@ -6,7 +6,7 @@ Run the following command to install BDIX proxy extension automatically:
 ```
 cd /tmp && wget https://github.com/emonbhuiyan/BDIX-OpenWRT/raw/main/install.sh && chmod +x install.sh && clear && sh install.sh && rm install.sh && cd / && clear
 ```
-Just run it and wait for completion. And enjoy. [Click here to learn step by step manual installation](#manual-installation-step-by-step)
+Just run it and wait for completion. And enjoy. <!-- [Click here to learn step by step manual installation](#manual-installation-step-by-step) -->
 
 ## To update proxy IP, Port, Username & Password
 ```
