@@ -4,7 +4,7 @@ BDIX bypass become very popular in Bangladesh, especially in rural and urban are
 # Video tutorial
 Installation process described in this video tutorial:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/jDpXC51o984?si=Gi_N4M8xsBJq0Y81" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[![Video Thumbnail](https://i.ytimg.com/vi/jDpXC51o984/maxresdefault.jpg)](https://www.youtube.com/watch?v=jDpXC51o984)
 
 # BDIX proxy service installation:
 Run the following command to install BDIX proxy extension automatically:
