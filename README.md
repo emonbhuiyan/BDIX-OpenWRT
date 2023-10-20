@@ -4,7 +4,9 @@ BDIX bypass become very popular in Bangladesh, especially in rural and urban are
 # Video tutorial
 Installation process described in this video tutorial:
 
-[![Video Thumbnail](https://i.ytimg.com/vi/jDpXC51o984/maxresdefault.jpg | width=500)](https://www.youtube.com/watch?v=jDpXC51o984)
+<a href="https://www.youtube.com/watch?v=jDpXC51o984">
+  <img src="https://i.ytimg.com/vi/jDpXC51o984/maxresdefault.jpg" alt="Install BDIX bypass on OpenWRT router" width="500"/>
+</a>
 
 # BDIX proxy service installation:
 Run the following command to install BDIX proxy extension automatically:
