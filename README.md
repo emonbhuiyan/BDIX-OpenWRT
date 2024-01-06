@@ -1,5 +1,5 @@
 # BDIX Bypass Service on OpenWRT Router
-BDIX bypass become very popular in Bangladesh, especially in rural and urban areas. Socks5 is one of the popular proxy protocols here. What if we could use Socks5 proxy on our router? Yeah, we can use Socks5 proxy on the OpenWRT router with Redsocks. I customized Redsocks as BDIX, especially for BDIX proxy users. However, I found a very rare tutorial about how to configure Socks5 proxy on an OpenWRT router. With this tutorial, we can use it on our OpenWRT router easily. To install and configure Socks5 proxy, ensure you have installed OpenWrt on your router. Then run commands as follows:
+BDIX bypass become very popular in Bangladesh, especially in rural and urban areas. Socks5 is one of the popular proxy protocols here. Could we use the Socks5 proxy on our router? Yeah, we can use the Socks5 proxy on the OpenWRT router with Redsocks. I customized Redsocks as BDIX, especially for BDIX proxy users. However, I found a very rare tutorial about configuring a Socks5 proxy on an OpenWRT router. With this tutorial, we can use it on our OpenWRT router easily. To install and configure the Socks5 proxy, please make sure you have installed OpenWrt on your router. Then run commands as follows:
 
 # Video tutorial
 Installation process described in this video tutorial:
@@ -9,7 +9,7 @@ Installation process described in this video tutorial:
 </a>
 
 # BDIX proxy service installation:
-Run the following command to install BDIX proxy extension automatically:
+Run the following command to install the BDIX proxy extension automatically:
 ```
 cd /tmp && wget https://github.com/emonbhuiyan/BDIX-OpenWRT/raw/main/install.sh && chmod +x install.sh && clear && sh install.sh && rm install.sh
 ```
@@ -25,7 +25,7 @@ After the update press `esc` key then `:wq` to save or `:q!` to discard changes
 
 # How to start and stop BDIX:
 
-### To start BDIX proxy bypass
+### To start the BDIX proxy bypass
 ```
 service bdix start
 ```
@@ -35,7 +35,7 @@ service bdix start
 service bdix stop
 ```
 
-### To restart BDIX proxy bypass
+### To restart the BDIX proxy bypass
 ```
 service bdix restart
 ```
@@ -49,5 +49,35 @@ service bdix enable
 ```
 service bdix disable
 ```
+
+# To update direct connection list:
+
+```
+vi /etc/init.d/bdix
+```
+You can delete the existing domain line from the list or add a new line and replace the domain name to add your desired direction connection.
+
+After the update press `esc` key then `:wq` to save or `:q!` to discard changes
+
+# To uninstall this module from your OpenWRT:
+Just run the following commands to uninstall this program from your OpenWRT router.
+
+```
+service bdix stop
+```
+
+```
+service bdix disable
+```
+
+```
+rm /etc/init.d/bdix
+```
+
+```
+rm /etc/bdix.conf
+```
+
+Please reboot your router after the uninstallation process.
 
 Thanks for following my tutorial. Follow me to get more interesting tips and tricks.
