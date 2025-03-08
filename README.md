@@ -1,83 +1,117 @@
 # BDIX Bypass Service on OpenWRT Router
-BDIX bypass become very popular in Bangladesh, especially in rural and urban areas. Socks5 is one of the popular proxy protocols here. Could we use the Socks5 proxy on our router? Yeah, we can use the Socks5 proxy on the OpenWRT router with Redsocks. I customized Redsocks as BDIX, especially for BDIX proxy users. However, I found a very rare tutorial about configuring a Socks5 proxy on an OpenWRT router. With this tutorial, we can use it on our OpenWRT router easily. To install and configure the Socks5 proxy, please make sure you have installed OpenWrt on your router. Then run commands as follows:
 
-# Video tutorial
-Installation process described in this video tutorial:
+BDIX bypass is becoming increasingly popular in Bangladesh, especially in both rural and urban areas. Socks5 is one of the most widely used proxy protocols here.
 
-<a href="https://www.youtube.com/watch?v=jDpXC51o984">
-  <img src="https://i.ytimg.com/vi/jDpXC51o984/maxresdefault.jpg" alt="Install BDIX bypass on OpenWRT router" width="500"/>
-</a>
+### Can we use a Socks5 proxy on an OpenWRT router?
+Yes! We can configure a Socks5 proxy on an OpenWRT router using **Redsocks**. I have customized Redsocks as **BDIX**, specifically for BDIX proxy users. However, there are very few tutorials available on setting up a Socks5 proxy on an OpenWRT router.
 
-# BDIX proxy service installation:
+This tutorial will guide you through the installation and configuration process, making it easy to set up on your OpenWRT router.
+
+---
+
+## 🎧 Video Tutorial
+For a step-by-step video guide, watch this tutorial:
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=jDpXC51o984">
+    <img src="https://i.ytimg.com/vi/jDpXC51o984/maxresdefault.jpg" alt="Install BDIX bypass on OpenWRT router" width="500"/>
+  </a>
+</p>
+
+---
+
+## 🚀 BDIX Proxy Service Installation
+
 Run the following command to install the BDIX proxy extension automatically:
+
 ```
 cd /tmp && wget https://github.com/emonbhuiyan/BDIX-OpenWRT/raw/main/install.sh && chmod +x install.sh && clear && sh install.sh && rm install.sh
 ```
-Just run it and wait for completion. And enjoy.
 
-## To update proxy IP, Port, Username & Password
+Just run it and wait for the process to complete. Enjoy!
+
+---
+
+## 🔧 Updating Proxy IP, Port, Username & Password
+
+To update the proxy settings, edit the configuration file:
+
 ```
 vi /etc/bdix.conf
 ```
-After the update press `esc` key then `:wq` to save or `:q!` to discard changes
 
-<img src="https://i.imgur.com/8uLp8I9.png" alt="Update proxy IP, Port, Username & Password" width="500"/>
+After making changes:
+- Press `Esc`, then type `:wq` to **save & exit**.
+- Type `:q!` to **exit without saving**.
 
-# How to start and stop BDIX:
+<p align="center">
+  <img src="https://i.imgur.com/8uLp8I9.png" alt="Update proxy IP, Port, Username & Password" width="500"/>
+</p>
 
-### To start the BDIX proxy bypass
+---
+
+## 🏛 Managing BDIX Proxy Service
+
+### Start BDIX Proxy Bypass
 ```
 service bdix start
 ```
 
-### To stop BDIX proxy bypass
+### Stop BDIX Proxy Bypass
 ```
 service bdix stop
 ```
 
-### To restart the BDIX proxy bypass
+### Restart BDIX Proxy Bypass
 ```
 service bdix restart
 ```
 
-### To enable BDIX auto boot-start proxy
+### Enable BDIX Auto Boot-Start
 ```
 service bdix enable
 ```
 
-### To disable BDIX auto boot-start proxy
+### Disable BDIX Auto Boot-Start
 ```
 service bdix disable
 ```
 
-# To update direct connection list:
+---
+
+## 🔄 Updating Direct Connection List
+
+To update the direct connection list, edit the following file:
 
 ```
 vi /etc/init.d/bdix
 ```
-You can delete the existing domain line from the list or add a new line and replace the domain name to add your desired direction connection.
 
-After the update press `esc` key then `:wq` to save or `:q!` to discard changes
+- You can **remove** an existing domain line from the list or  
+- **Add** a new domain name to allow direct connections.
 
-# To uninstall this module from your OpenWRT:
-Just run the following commands to uninstall this program from your OpenWRT router.
+After updating:
+- Press `Esc`, then type `:wq` to **save & exit**.
+- Type `:q!` to **exit without saving**.
+
+---
+
+## ❌ Uninstalling BDIX from OpenWRT
+
+To remove BDIX from your router, run the following commands:
 
 ```
 service bdix stop
-```
-
-```
 service bdix disable
-```
-
-```
 rm /etc/init.d/bdix
-```
-
-```
 rm /etc/bdix.conf
 ```
 
-Please reboot your router after the uninstallation process.
+After completing the uninstallation, **reboot your router**.
 
-Thanks for following my tutorial. Follow me to get more interesting tips and tricks.
+---
+
+## 🙌 Thanks for Following!
+
+I hope this tutorial was helpful. Follow me for more interesting tips and tricks! 🚀
+
