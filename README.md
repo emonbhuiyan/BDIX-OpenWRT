@@ -109,6 +109,8 @@ rm /etc/bdix.conf
 
 After completing the uninstallation, **reboot your router**.
 
+## Stargazers over time
+[![Stargazers over time](https://starchart.cc/emonbhuiyan/BDIX-OpenWRT.svg?variant=adaptive)](https://starchart.cc/emonbhuiyan/BDIX-OpenWRT)
 ---
 
 ## 🙌 Thanks for Following!
