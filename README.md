@@ -162,3 +162,8 @@ Force browsers to fall back to secure TCP connections for WebRTC by blocking out
   ```bash
   /etc/init.d/firewall restart
   ```
+
+---
+## GitAds Sponsored
+[![Sponsored by GitAds](https://gitads.dev/v1/ad-serve?source=emonbhuiyan/bdix-openwrt@github)](https://gitads.dev/v1/ad-track?source=emonbhuiyan/bdix-openwrt@github)
+
