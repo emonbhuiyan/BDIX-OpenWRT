@@ -1,0 +1,12 @@
+{
+	"admin/services/redsocks": {
+		"title": "Redsocks Proxy",
+		"action": {
+			"type": "view",
+			"path": "services/redsocks"
+		},
+		"depends": {
+			"acl": [ "luci-app-redsocks" ]
+		}
+	}
+}

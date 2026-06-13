@@ -1,0 +1,73 @@
+'use strict';
+'use ui';
+
+return L.view.extend({
+	render: function() {
+		var m, s, o;
+
+		m = new form.Map('redsocks', _('Redsocks Proxy Configuration'),
+			_('Redsocks routes all TCP traffic originating from your LAN through a remote SOCKS4/SOCKS5 proxy server.'));
+
+		// Global Section
+		s = m.section(form.NamedSection, 'global', 'redsocks', _('Global Configuration'));
+		s.anonymous = true;
+
+		// Service Enable Switch
+		o = s.option(form.Flag, 'enabled', _('Enable Redsocks Service'), _('Start/stop the redsocks proxy daemon.'));
+		o.rmempty = false;
+
+		// Connection Settings Section
+		s = m.section(form.NamedSection, 'connection', 'redsocks', _('Proxy Server Settings'));
+		s.anonymous = true;
+
+		// Remote IP/Domain
+		o = s.option(form.Value, 'ip', _('Proxy Server IP/Host'), _('The IP address or domain name of the remote proxy server.'));
+		o.datatype = 'host';
+		o.rmempty = false;
+
+		// Remote Port
+		o = s.option(form.Value, 'port', _('Proxy Server Port'), _('The connection port of the remote proxy server.'));
+		o.datatype = 'port';
+		o.rmempty = false;
+
+		// Proxy Type
+		o = s.option(form.ListValue, 'type', _('Proxy Protocol Type'));
+		o.value('socks5', 'SOCKS5');
+		o.value('socks4', 'SOCKS4');
+		o.value('http-connect', 'HTTP CONNECT (Squid)');
+		o.value('http-relay', 'HTTP RELAY');
+		o.default = 'socks5';
+
+		// Authentication Username
+		o = s.option(form.Value, 'login', _('Authentication Username'), _('Leave blank if authentication is not required.'));
+		o.rmempty = true;
+
+		// Authentication Password
+		o = s.option(form.Value, 'password', _('Authentication Password'), _('Leave blank if authentication is not required.'));
+		o.password = true;
+		o.rmempty = true;
+
+		// Local / Redirection Settings Section
+		s = m.section(form.NamedSection, 'connection', 'redsocks', _('Advanced / Redirection Settings'));
+		s.anonymous = true;
+
+		// Local Listen IP
+		o = s.option(form.Value, 'local_ip', _('Local Listen IP'), _('IP address redsocks listens on locally. (0.0.0.0 listens on all interfaces)'));
+		o.datatype = 'ip4addr';
+		o.default = '0.0.0.0';
+		o.rmempty = false;
+
+		// Local Listen Port
+		o = s.option(form.Value, 'local_port', _('Local Listen Port'), _('Local redirection port. MUST match the ports defined in firewall redirect rules.'));
+		o.datatype = 'port';
+		o.default = '1337';
+		o.rmempty = false;
+
+		// Interface
+		o = s.option(form.Value, 'interface', _('Redirect Interface'), _('LAN interface to capture outbound traffic from. (Default: br-lan)'));
+		o.default = 'br-lan';
+		o.rmempty = false;
+
+		return m.render();
+	}
+});

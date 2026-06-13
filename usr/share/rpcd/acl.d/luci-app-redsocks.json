@@ -1,0 +1,11 @@
+{
+	"luci-app-redsocks": {
+		"description": "Grant UCI access to Redsocks settings",
+		"read": {
+			"uci": [ "redsocks" ]
+		},
+		"write": {
+			"uci": [ "redsocks" ]
+		}
+	}
+}
