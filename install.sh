@@ -49,7 +49,8 @@ echo "Enabling Redsocks auto-boot and reloading configurations..."
 # Clear LuCI cache to ensure the new menu item and JS render immediately
 rm -rf /tmp/luci-indexcache /tmp/luci-modulecache
 
-# Restart uhttpd (LuCI server) to reload permissions and views
+# Restart rpcd and uhttpd (LuCI server) to reload permissions and views
+/etc/init.d/rpcd restart || true
 /etc/init.d/uhttpd restart || true
 
 echo "=================================================================="

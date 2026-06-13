@@ -1,5 +1,5 @@
 'use strict';
-'use ui';
+'require form';
 
 return L.view.extend({
 	render: function() {

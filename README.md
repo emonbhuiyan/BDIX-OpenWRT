@@ -100,5 +100,21 @@ Copy the directories from this repository into your router's filesystem:
 ### Step 3: Refresh LuCI services
 ```bash
 rm -rf /tmp/luci-indexcache /tmp/luci-modulecache
+/etc/init.d/rpcd restart
 /etc/init.d/uhttpd restart
+```
+
+---
+
+## 5. Uninstallation
+
+To completely remove the LuCI Web UI components and restore original configurations, run the following command in your router's SSH terminal:
+
+```bash
+cd /tmp && wget --no-check-certificate https://github.com/emonbhuiyan/Redsocks-OpenWRT/raw/dev/uninstall.sh && chmod +x uninstall.sh && sh uninstall.sh && rm uninstall.sh && cd /
+```
+
+If you wish to also uninstall the redsocks binaries and dependencies, run:
+```bash
+opkg remove redsocks iptables-mod-nat-extra
 ```
