@@ -88,7 +88,8 @@ return L.view.extend({
 		o.rmempty = true;
 
 		// Direct Connection (Bypass) Settings Section
-		s = m.section(form.NamedSection, 'connection', 'redsocks', _('Direct Connection (Bypass) Settings'));
+		s = m.section(form.NamedSection, 'connection', 'redsocks', _('Direct Connection (Bypass) Settings'),
+			_('Configure domains or IP addresses that should bypass the proxy and connect directly. Note: You must restart the Redsocks service to apply changes to these bypass rules.'));
 		s.anonymous = true;
 
 		o = s.option(form.DynamicList, 'bypass_domain', _('Bypass Domains'), _('Direct connection for specific domains (e.g. facebook.com).'));
