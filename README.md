@@ -113,3 +113,34 @@ To completely remove the LuCI Web UI components, uninstall package dependencies,
 ```bash
 cd /tmp && wget --no-check-certificate https://github.com/emonbhuiyan/Redsocks-OpenWRT/raw/dev/uninstall.sh && chmod +x uninstall.sh && sh uninstall.sh && rm uninstall.sh && cd /
 ```
+
+---
+
+## 6. Optional: Leak Prevention (WebRTC & DNS Leaks)
+
+By default, transparent proxies only intercept **TCP** traffic. Because WebRTC STUN queries and standard DNS lookups run over **UDP**, they can bypass the proxy and leak your real WAN IP or ISP's DNS servers. 
+
+If you want to secure these leaks, you can implement these optional, non-intrusive configurations:
+
+### A. Prevent DNS Leaks (DNS-over-HTTPS)
+By encrypting DNS requests over HTTPS (TCP port 443), they are automatically captured by Redsocks and securely routed through your SOCKS5 proxy:
+1. SSH into your router and install the lightweight DoH client:
+   ```bash
+   opkg update
+   opkg install https-dns-proxy
+   ```
+2. Enable and start the service:
+   ```bash
+   /etc/init.d/https-dns-proxy enable
+   /etc/init.d/https-dns-proxy start
+   ```
+
+### B. Prevent WebRTC Leaks (Block WAN UDP)
+Force browsers to fall back to secure TCP connections for WebRTC by blocking outgoing UDP traffic from client devices (except standard DNS on port 53 and NTP time sync on port 123):
+1. Navigate to **Network** -> **Firewall** -> **Custom Rules** in LuCI (or edit `/etc/firewall.user`).
+2. Add the following rule:
+   ```bash
+   # Block client UDP traffic to WAN to prevent WebRTC leaks
+   iptables -I FORWARD -i br-lan -o wan -p udp --dport ! 53 --dport ! 123 -j REJECT
+   ```
+   *(Note: This rule will block UDP-based online multiplayer games. Skip this step if you play games that require UDP).*
