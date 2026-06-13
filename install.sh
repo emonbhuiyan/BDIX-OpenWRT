@@ -48,8 +48,8 @@ log_info "Backing up existing configurations..."
 [ -f /etc/init.d/bdix ] && mv /etc/init.d/bdix /etc/init.d/bdix.bkp
 
 # 5. Download the latest source files as a tarball from GitHub
-log_info "Downloading Web UI components from dev branch..."
-wget -O /tmp/bdix-ui.tar.gz https://github.com/emonbhuiyan/BDIX-OpenWRT/archive/refs/heads/dev.tar.gz
+log_info "Downloading Web UI components from main branch..."
+wget -O /tmp/bdix-ui.tar.gz https://github.com/emonbhuiyan/BDIX-OpenWRT/archive/refs/heads/main.tar.gz
 
 # 6. Extract the tarball to a temporary directory
 mkdir -p /tmp/bdix-ui-extract
@@ -57,9 +57,9 @@ tar -zxf /tmp/bdix-ui.tar.gz -C /tmp/bdix-ui-extract
 
 # 7. Copy components to system directories
 log_info "Deploying system files..."
-cp -r /tmp/bdix-ui-extract/BDIX-OpenWRT-dev/etc/* /etc/
-cp -r /tmp/bdix-ui-extract/BDIX-OpenWRT-dev/usr/* /usr/
-cp -r /tmp/bdix-ui-extract/BDIX-OpenWRT-dev/www/* /www/
+cp -r /tmp/bdix-ui-extract/BDIX-OpenWRT-main/etc/* /etc/
+cp -r /tmp/bdix-ui-extract/BDIX-OpenWRT-main/usr/* /usr/
+cp -r /tmp/bdix-ui-extract/BDIX-OpenWRT-main/www/* /www/
 
 # 8. Set execute permissions for the init script
 chmod +x /etc/init.d/bdix

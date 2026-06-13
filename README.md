@@ -11,7 +11,7 @@ It is ideal for routing all LAN traffic through a SOCKS5/SOCKS4 proxy server (e.
 Run the following command in your router's SSH terminal to automatically download, install dependencies, and configure the LuCI Web UI:
 
 ```bash
-cd /tmp && wget --no-check-certificate https://github.com/emonbhuiyan/BDIX-OpenWRT/raw/dev/install.sh && chmod +x install.sh && sh install.sh && rm install.sh && cd /
+cd /tmp && wget --no-check-certificate https://github.com/emonbhuiyan/BDIX-OpenWRT/raw/main/install.sh && chmod +x install.sh && sh install.sh && rm install.sh && cd /
 ```
 
 Once installed, clear your browser cache and refresh your router's web admin page.
@@ -110,7 +110,7 @@ rm -rf /tmp/luci-indexcache /tmp/luci-modulecache
 To completely remove the LuCI Web UI components, uninstall package dependencies, and restore original configurations, run the following command in your router's SSH terminal:
 
 ```bash
-cd /tmp && wget --no-check-certificate https://github.com/emonbhuiyan/BDIX-OpenWRT/raw/dev/uninstall.sh && chmod +x uninstall.sh && sh uninstall.sh && rm uninstall.sh && cd /
+cd /tmp && wget --no-check-certificate https://github.com/emonbhuiyan/BDIX-OpenWRT/raw/main/uninstall.sh && chmod +x uninstall.sh && sh uninstall.sh && rm uninstall.sh && cd /
 ```
 
 ---
