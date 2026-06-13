@@ -10,7 +10,7 @@ USE_PROCD=1
 generate_config() {
 	local enabled ip port type login password local_ip local_port
 	
-	config_load redsocks
+	config_load bdix
 	
 	config_get_bool enabled global enabled 0
 	[ "$enabled" -eq 0 ] && return 1
@@ -28,9 +28,9 @@ generate_config() {
 
 	mkdir -p /var/etc
 
-	# Generate redsocks.conf dynamically.
+	# Generate bdix.conf dynamically.
 	# We set daemon = off because procd manages daemonization/monitoring.
-	cat <<EOF > /var/etc/redsocks.conf
+	cat <<EOF > /var/etc/bdix.conf
 base {
 	log_debug = off;
 	log_info = on;
@@ -48,55 +48,55 @@ redsocks {
 EOF
 
 	if [ -n "$login" ]; then
-		echo "	login = \"$login\";" >> /var/etc/redsocks.conf
+		echo "	login = \"$login\";" >> /var/etc/bdix.conf
 	fi
 	if [ -n "$password" ]; then
-		echo "	password = \"$password\";" >> /var/etc/redsocks.conf
+		echo "	password = \"$password\";" >> /var/etc/bdix.conf
 	fi
 
-	echo "}" >> /var/etc/redsocks.conf
+	echo "}" >> /var/etc/bdix.conf
 	return 0
 }
 
 add_bypass_rule() {
-	[ -n "$1" ] && iptables -t nat -A REDSOCKS -d "$1" -j RETURN
+	[ -n "$1" ] && iptables -t nat -A BDIX -d "$1" -j RETURN
 }
 
 iptable_start() {
 	local local_port interface
-	config_load redsocks
+	config_load bdix
 	config_get local_port connection local_port "1337"
 	config_get interface connection interface "br-lan"
 
-	/bin/echo -n "running proxy bypass iptables ..."
+	/bin/echo -n "running BDIX proxy bypass iptables ..."
 
-	# Create a new chain for Redsocks
-	iptables -t nat -N REDSOCKS 2>/dev/null
+	# Create a new chain for BDIX
+	iptables -t nat -N BDIX 2>/dev/null
 
-	# Clean the Redsocks chain in case it already exists
-	iptables -t nat -F REDSOCKS 2>/dev/null
+	# Clean the BDIX chain in case it already exists
+	iptables -t nat -F BDIX 2>/dev/null
 
 	# Ignore private/local IP addresses
-	iptables -t nat -A REDSOCKS -d 0.0.0.0/8 -j RETURN
-	iptables -t nat -A REDSOCKS -d 10.0.0.0/8 -j RETURN
-	iptables -t nat -A REDSOCKS -d 127.0.0.0/8 -j RETURN
-	iptables -t nat -A REDSOCKS -d 169.254.0.0/16 -j RETURN
-	iptables -t nat -A REDSOCKS -d 172.16.0.0/12 -j RETURN
-	iptables -t nat -A REDSOCKS -d 192.168.0.0/16 -j RETURN
-	iptables -t nat -A REDSOCKS -d 224.0.0.0/4 -j RETURN
-	iptables -t nat -A REDSOCKS -d 240.0.0.0/4 -j RETURN
+	iptables -t nat -A BDIX -d 0.0.0.0/8 -j RETURN
+	iptables -t nat -A BDIX -d 10.0.0.0/8 -j RETURN
+	iptables -t nat -A BDIX -d 127.0.0.0/8 -j RETURN
+	iptables -t nat -A BDIX -d 169.254.0.0/16 -j RETURN
+	iptables -t nat -A BDIX -d 172.16.0.0/12 -j RETURN
+	iptables -t nat -A BDIX -d 192.168.0.0/16 -j RETURN
+	iptables -t nat -A BDIX -d 224.0.0.0/4 -j RETURN
+	iptables -t nat -A BDIX -d 240.0.0.0/4 -j RETURN
 
 	# Custom direct connections (bypass rules)
 	config_list_foreach connection bypass_domain add_bypass_rule
 	config_list_foreach connection bypass_ip add_bypass_rule
 
 	# Redirect everything else to local redsocks port
-	iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports "$local_port"
+	iptables -t nat -A BDIX -p tcp -j REDIRECT --to-ports "$local_port"
 
-	# Apply Redsocks chain to PREROUTING for incoming packets on interface
+	# Apply BDIX chain to PREROUTING for incoming packets on interface
 	# First, delete if it already exists to avoid duplicates
-	iptables -t nat -D PREROUTING -i "$interface" -p tcp -j REDSOCKS 2>/dev/null
-	iptables -t nat -A PREROUTING -i "$interface" -p tcp -j REDSOCKS
+	iptables -t nat -D PREROUTING -i "$interface" -p tcp -j BDIX 2>/dev/null
+	iptables -t nat -A PREROUTING -i "$interface" -p tcp -j BDIX
 
 	# Accept connections to the redsocks port from the LAN interface
 	iptables -D INPUT -i "$interface" -p tcp --dport "$local_port" -j ACCEPT 2>/dev/null
@@ -107,19 +107,19 @@ iptable_start() {
 
 iptable_stop() {
 	local local_port interface
-	config_load redsocks
+	config_load bdix
 	config_get local_port connection local_port "1337"
 	config_get interface connection interface "br-lan"
 
-	/bin/echo -n "cleaning proxy bypass iptables ..."
+	/bin/echo -n "cleaning BDIX proxy bypass iptables ..."
 
-	# Safely remove references to REDSOCKS chain instead of flushing general chains
-	iptables -t nat -D PREROUTING -i "$interface" -p tcp -j REDSOCKS 2>/dev/null
+	# Safely remove references to BDIX chain
+	iptables -t nat -D PREROUTING -i "$interface" -p tcp -j BDIX 2>/dev/null
 	iptables -D INPUT -i "$interface" -p tcp --dport "$local_port" -j ACCEPT 2>/dev/null
 
-	# Flush and delete the REDSOCKS chain
-	iptables -t nat -F REDSOCKS 2>/dev/null
-	iptables -t nat -X REDSOCKS 2>/dev/null
+	# Flush and delete the BDIX chain
+	iptables -t nat -F BDIX 2>/dev/null
+	iptables -t nat -X BDIX 2>/dev/null
 
 	/bin/echo " done"
 }
@@ -128,7 +128,7 @@ start_service() {
 	generate_config || return 1
 
 	procd_open_instance
-	procd_set_param command /usr/sbin/redsocks -c /var/etc/redsocks.conf -p /var/run/redsocks.pid
+	procd_set_param command /usr/sbin/redsocks -c /var/etc/bdix.conf -p /var/run/bdix.pid
 	procd_set_param respawn
 	procd_close_instance
 
@@ -137,8 +137,9 @@ start_service() {
 
 stop_service() {
 	iptable_stop
+	rm -f /var/run/bdix.pid
 }
 
 service_triggers() {
-	procd_add_reload_trigger "redsocks"
+	procd_add_reload_trigger "bdix"
 }

@@ -1,0 +1,14 @@
+{
+	"luci-app-bdix": {
+		"description": "Grant UCI access to BDIX settings",
+		"read": {
+			"uci": [ "bdix" ]
+		},
+		"write": {
+			"uci": [ "bdix" ],
+			"file": {
+				"/etc/init.d/bdix": [ "exec" ]
+			}
+		}
+	}
+}

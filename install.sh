@@ -26,7 +26,7 @@ log_warn() {
 
 # Display Header Banner
 printf "${BLUE}======================================================${NC}\n"
-printf "${BLUE}${BOLD}         Redsocks OpenWRT & LuCI UI Installer         ${NC}\n"
+printf "${BLUE}${BOLD}           BDIX OpenWRT & LuCI UI Installer           ${NC}\n"
 printf "${BLUE}======================================================${NC}\n"
 printf "\n"
 
@@ -40,40 +40,36 @@ opkg install iptables iptables-mod-nat-extra redsocks
 
 # 3. Stop running services if any
 log_info "Cleaning up old service instances..."
-service redsocks stop >/dev/null 2>&1 || true
+/etc/init.d/bdix stop >/dev/null 2>&1 || true
 
 # 4. Backup old configurations if they exist
 log_info "Backing up existing configurations..."
-if [ -f /etc/redsocks.conf ]; then
-	mv /etc/redsocks.conf /etc/redsocks.conf.bkp
-	log_warn "Existing /etc/redsocks.conf backed up to redsocks.conf.bkp"
-fi
-[ -f /etc/config/redsocks ] && mv /etc/config/redsocks /etc/config/redsocks.bkp
-[ -f /etc/init.d/redsocks ] && mv /etc/init.d/redsocks /etc/init.d/redsocks.bkp
+[ -f /etc/config/bdix ] && mv /etc/config/bdix /etc/config/bdix.bkp
+[ -f /etc/init.d/bdix ] && mv /etc/init.d/bdix /etc/init.d/bdix.bkp
 
 # 5. Download the latest source files as a tarball from GitHub
-log_info "Downloading Web UI components from main branch..."
-wget -O /tmp/redsocks-ui.tar.gz https://github.com/emonbhuiyan/Redsocks-OpenWRT/archive/refs/heads/main.tar.gz
+log_info "Downloading Web UI components from dev branch..."
+wget -O /tmp/bdix-ui.tar.gz https://github.com/emonbhuiyan/BDIX-OpenWRT/archive/refs/heads/dev.tar.gz
 
 # 6. Extract the tarball to a temporary directory
-mkdir -p /tmp/redsocks-ui-extract
-tar -zxf /tmp/redsocks-ui.tar.gz -C /tmp/redsocks-ui-extract
+mkdir -p /tmp/bdix-ui-extract
+tar -zxf /tmp/bdix-ui.tar.gz -C /tmp/bdix-ui-extract
 
 # 7. Copy components to system directories
 log_info "Deploying system files..."
-cp -r /tmp/redsocks-ui-extract/Redsocks-OpenWRT-main/etc/* /etc/
-cp -r /tmp/redsocks-ui-extract/Redsocks-OpenWRT-main/usr/* /usr/
-cp -r /tmp/redsocks-ui-extract/Redsocks-OpenWRT-main/www/* /www/
+cp -r /tmp/bdix-ui-extract/BDIX-OpenWRT-dev/etc/* /etc/
+cp -r /tmp/bdix-ui-extract/BDIX-OpenWRT-dev/usr/* /usr/
+cp -r /tmp/bdix-ui-extract/BDIX-OpenWRT-dev/www/* /www/
 
 # 8. Set execute permissions for the init script
-chmod +x /etc/init.d/redsocks
+chmod +x /etc/init.d/bdix
 
 # 9. Clean up temporary files
-rm -rf /tmp/redsocks-ui.tar.gz /tmp/redsocks-ui-extract
+rm -rf /tmp/bdix-ui.tar.gz /tmp/bdix-ui-extract
 
 # 10. Enable service and reload LuCI
 log_info "Registering startup hooks and reloading LuCI services..."
-/etc/init.d/redsocks enable
+/etc/init.d/bdix enable
 
 # Clear LuCI cache
 rm -rf /tmp/luci-indexcache /tmp/luci-modulecache
@@ -87,5 +83,5 @@ printf "${GREEN}======================================================${NC}\n"
 log_success "Installation completed successfully!"
 printf "${GREEN}------------------------------------------------------${NC}\n"
 printf " Navigate to your router's Web Interface (LuCI):\n"
-printf "   Services -> Redsocks Proxy\n"
+printf "   Services -> BDIX Proxy\n"
 printf "${GREEN}======================================================${NC}\n"

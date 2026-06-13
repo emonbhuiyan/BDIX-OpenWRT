@@ -7,55 +7,55 @@ return L.view.extend({
 	render: function() {
 		var m, s, o;
 
-		m = new form.Map('redsocks', _('Redsocks Proxy Configuration'),
-			_('Redsocks routes all TCP traffic originating from your LAN through a remote SOCKS4/SOCKS5 proxy server.'));
+		m = new form.Map('bdix', _('BDIX Proxy Configuration'),
+			_('Configure transparent redirect routing over SOCKS4/SOCKS5 proxies for BDIX bypass.'));
 
 		// Global Section
-		s = m.section(form.NamedSection, 'global', 'redsocks', _('Global Configuration'));
+		s = m.section(form.NamedSection, 'global', 'bdix', _('Global Configuration'));
 		s.anonymous = true;
 
 		// Service Enable Switch
-		o = s.option(form.Flag, 'enabled', _('Enable Redsocks Service'), _('Start/stop the redsocks proxy daemon.'));
+		o = s.option(form.Flag, 'enabled', _('Enable BDIX Service'), _('Start/stop the BDIX proxy daemon.'));
 		o.rmempty = false;
 
 		// Start Button
-		o = s.option(form.Button, '_start', _('Start Service'), _('Manually start the Redsocks daemon and apply redirect rules.'));
+		o = s.option(form.Button, '_start', _('Start Service'), _('Manually start the BDIX daemon and apply redirect rules.'));
 		o.inputstyle = 'apply';
 		o.inputtitle = _('Start Service');
 		o.onclick = function(ev) {
-			return fs.exec('/etc/init.d/redsocks', ['start']).then(function(res) {
-				ui.addNotification(null, E('p', _('Redsocks service started successfully.')), 'info');
+			return fs.exec('/etc/init.d/bdix', ['start']).then(function(res) {
+				ui.addNotification(null, E('p', _('BDIX service started successfully.')), 'info');
 			}).catch(function(err) {
-				ui.addNotification(null, E('p', _('Failed to start Redsocks service: ') + err.message), 'danger');
+				ui.addNotification(null, E('p', _('Failed to start BDIX service: ') + err.message), 'danger');
 			});
 		};
 
 		// Stop Button
-		o = s.option(form.Button, '_stop', _('Stop Service'), _('Manually stop the Redsocks daemon and flush redirect rules.'));
+		o = s.option(form.Button, '_stop', _('Stop Service'), _('Manually stop the BDIX daemon and flush redirect rules.'));
 		o.inputstyle = 'reset';
 		o.inputtitle = _('Stop Service');
 		o.onclick = function(ev) {
-			return fs.exec('/etc/init.d/redsocks', ['stop']).then(function(res) {
-				ui.addNotification(null, E('p', _('Redsocks service stopped successfully.')), 'info');
+			return fs.exec('/etc/init.d/bdix', ['stop']).then(function(res) {
+				ui.addNotification(null, E('p', _('BDIX service stopped successfully.')), 'info');
 			}).catch(function(err) {
-				ui.addNotification(null, E('p', _('Failed to stop Redsocks service: ') + err.message), 'danger');
+				ui.addNotification(null, E('p', _('Failed to stop BDIX service: ') + err.message), 'danger');
 			});
 		};
 
 		// Restart Button
-		o = s.option(form.Button, '_restart', _('Restart Service'), _('Manually restart the Redsocks daemon and refresh redirect rules.'));
+		o = s.option(form.Button, '_restart', _('Restart Service'), _('Manually restart the BDIX daemon and refresh redirect rules.'));
 		o.inputstyle = 'reload';
 		o.inputtitle = _('Restart Service');
 		o.onclick = function(ev) {
-			return fs.exec('/etc/init.d/redsocks', ['restart']).then(function(res) {
-				ui.addNotification(null, E('p', _('Redsocks service restarted successfully.')), 'info');
+			return fs.exec('/etc/init.d/bdix', ['restart']).then(function(res) {
+				ui.addNotification(null, E('p', _('BDIX service restarted successfully.')), 'info');
 			}).catch(function(err) {
-				ui.addNotification(null, E('p', _('Failed to restart Redsocks service: ') + err.message), 'danger');
+				ui.addNotification(null, E('p', _('Failed to restart BDIX service: ') + err.message), 'danger');
 			});
 		};
 
 		// Connection Settings Section
-		s = m.section(form.NamedSection, 'connection', 'redsocks', _('Proxy Server Settings'));
+		s = m.section(form.NamedSection, 'connection', 'bdix', _('Proxy Server Settings'));
 		s.anonymous = true;
 
 		// Remote IP/Domain
@@ -88,8 +88,8 @@ return L.view.extend({
 		o.rmempty = true;
 
 		// Direct Connection (Bypass) Settings Section
-		s = m.section(form.NamedSection, 'connection', 'redsocks', _('Direct Connection (Bypass) Settings'),
-			_('Configure domains or IP addresses that should bypass the proxy and connect directly. Note: You must restart the Redsocks service to apply changes to these bypass rules.'));
+		s = m.section(form.NamedSection, 'connection', 'bdix', _('Direct Connection (Bypass) Settings'),
+			_('Configure domains or IP addresses that should bypass the proxy and connect directly. Note: You must restart the BDIX service to apply changes to these bypass rules.'));
 		s.anonymous = true;
 
 		o = s.option(form.DynamicList, 'bypass_domain', _('Bypass Domains'), _('Direct connection for specific domains (e.g. facebook.com).'));
@@ -101,11 +101,11 @@ return L.view.extend({
 		o.placeholder = '172.16.50.7';
 
 		// Local / Redirection Settings Section
-		s = m.section(form.NamedSection, 'connection', 'redsocks', _('Advanced / Redirection Settings'));
+		s = m.section(form.NamedSection, 'connection', 'bdix', _('Advanced / Redirection Settings'));
 		s.anonymous = true;
 
 		// Local Listen IP
-		o = s.option(form.Value, 'local_ip', _('Local Listen IP'), _('IP address redsocks listens on locally. (0.0.0.0 listens on all interfaces)'));
+		o = s.option(form.Value, 'local_ip', _('Local Listen IP'), _('IP address Redsocks listens on locally. (0.0.0.0 listens on all interfaces)'));
 		o.datatype = 'ip4addr';
 		o.default = '0.0.0.0';
 		o.rmempty = false;

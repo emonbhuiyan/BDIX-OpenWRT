@@ -23,43 +23,36 @@ log_warn() {
 
 # Display Header Banner
 printf "${YELLOW}======================================================${NC}\n"
-printf "${YELLOW}${BOLD}        Redsocks OpenWRT Web UI Uninstaller          ${NC}\n"
+printf "${YELLOW}${BOLD}         BDIX OpenWRT Web UI Uninstaller             ${NC}\n"
 printf "${YELLOW}======================================================${NC}\n"
 printf "\n"
 
 # 1. Stop and disable the service
-log_info "Stopping and disabling redsocks service..."
-/etc/init.d/redsocks stop >/dev/null 2>&1 || true
-/etc/init.d/redsocks disable >/dev/null 2>&1 || true
+log_info "Stopping and disabling bdix service..."
+/etc/init.d/bdix stop >/dev/null 2>&1 || true
+/etc/init.d/bdix disable >/dev/null 2>&1 || true
 
 # 2. Restore backed up configuration if it exists
 log_info "Restoring original configuration backups..."
-if [ -f /etc/redsocks.conf.bkp ]; then
-	mv /etc/redsocks.conf.bkp /etc/redsocks.conf
-	log_success "Restored original /etc/redsocks.conf"
+if [ -f /etc/config/bdix.bkp ]; then
+	mv /etc/config/bdix.bkp /etc/config/bdix
+	log_success "Restored original /etc/config/bdix"
 else
-	rm -f /etc/redsocks.conf
+	rm -f /etc/config/bdix
 fi
 
-if [ -f /etc/config/redsocks.bkp ]; then
-	mv /etc/config/redsocks.bkp /etc/config/redsocks
-	log_success "Restored original /etc/config/redsocks"
-else
-	rm -f /etc/config/redsocks
-fi
-
-if [ -f /etc/init.d/redsocks.bkp ]; then
-	mv /etc/init.d/redsocks.bkp /etc/init.d/redsocks
+if [ -f /etc/init.d/bdix.bkp ]; then
+	mv /etc/init.d/bdix.bkp /etc/init.d/bdix
 	log_success "Restored original service init script"
 else
-	rm -f /etc/init.d/redsocks
+	rm -f /etc/init.d/bdix
 fi
 
 # 3. Remove installed files
-log_info "Removing Redsocks-OpenWRT UI components..."
-rm -f /usr/share/luci/menu.d/luci-app-redsocks.json
-rm -f /usr/share/rpcd/acl.d/luci-app-redsocks.json
-rm -rf /www/luci-static/resources/view/services/redsocks.js
+log_info "Removing BDIX-OpenWRT UI components..."
+rm -f /usr/share/luci/menu.d/luci-app-bdix.json
+rm -f /usr/share/rpcd/acl.d/luci-app-bdix.json
+rm -rf /www/luci-static/resources/view/services/bdix.js
 
 # 4. Remove packages if not in use by other services
 log_info "Checking package dependencies for cleanup..."

@@ -1,0 +1,12 @@
+{
+	"admin/services/bdix": {
+		"title": "BDIX Proxy",
+		"action": {
+			"type": "view",
+			"path": "services/bdix"
+		},
+		"depends": {
+			"acl": [ "luci-app-bdix" ]
+		}
+	}
+}
