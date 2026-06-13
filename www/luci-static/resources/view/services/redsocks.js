@@ -1,5 +1,7 @@
 'use strict';
 'require form';
+'require fs';
+'require ui';
 
 return L.view.extend({
 	render: function() {
@@ -15,6 +17,42 @@ return L.view.extend({
 		// Service Enable Switch
 		o = s.option(form.Flag, 'enabled', _('Enable Redsocks Service'), _('Start/stop the redsocks proxy daemon.'));
 		o.rmempty = false;
+
+		// Start Button
+		o = s.option(form.Button, '_start', _('Start Service'), _('Manually start the Redsocks daemon and apply redirect rules.'));
+		o.inputstyle = 'apply';
+		o.inputtitle = _('Start Service');
+		o.onclick = function(ev) {
+			return fs.exec('/etc/init.d/redsocks', ['start']).then(function(res) {
+				ui.addNotification(null, E('p', _('Redsocks service started successfully.')), 'info');
+			}).catch(function(err) {
+				ui.addNotification(null, E('p', _('Failed to start Redsocks service: ') + err.message), 'danger');
+			});
+		};
+
+		// Stop Button
+		o = s.option(form.Button, '_stop', _('Stop Service'), _('Manually stop the Redsocks daemon and flush redirect rules.'));
+		o.inputstyle = 'reset';
+		o.inputtitle = _('Stop Service');
+		o.onclick = function(ev) {
+			return fs.exec('/etc/init.d/redsocks', ['stop']).then(function(res) {
+				ui.addNotification(null, E('p', _('Redsocks service stopped successfully.')), 'info');
+			}).catch(function(err) {
+				ui.addNotification(null, E('p', _('Failed to stop Redsocks service: ') + err.message), 'danger');
+			});
+		};
+
+		// Restart Button
+		o = s.option(form.Button, '_restart', _('Restart Service'), _('Manually restart the Redsocks daemon and refresh redirect rules.'));
+		o.inputstyle = 'reload';
+		o.inputtitle = _('Restart Service');
+		o.onclick = function(ev) {
+			return fs.exec('/etc/init.d/redsocks', ['restart']).then(function(res) {
+				ui.addNotification(null, E('p', _('Redsocks service restarted successfully.')), 'info');
+			}).catch(function(err) {
+				ui.addNotification(null, E('p', _('Failed to restart Redsocks service: ') + err.message), 'danger');
+			});
+		};
 
 		// Connection Settings Section
 		s = m.section(form.NamedSection, 'connection', 'redsocks', _('Proxy Server Settings'));

@@ -5,7 +5,10 @@
 			"uci": [ "redsocks" ]
 		},
 		"write": {
-			"uci": [ "redsocks" ]
+			"uci": [ "redsocks" ],
+			"file": {
+				"/etc/init.d/redsocks": [ "exec" ]
+			}
 		}
 	}
 }
