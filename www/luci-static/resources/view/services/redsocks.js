@@ -61,11 +61,13 @@ return L.view.extend({
 		// Remote IP/Domain
 		o = s.option(form.Value, 'ip', _('Proxy Server IP/Host'), _('The IP address or domain name of the remote proxy server.'));
 		o.datatype = 'host';
+		o.placeholder = '192.168.100.1';
 		o.rmempty = false;
 
 		// Remote Port
 		o = s.option(form.Value, 'port', _('Proxy Server Port'), _('The connection port of the remote proxy server.'));
 		o.datatype = 'port';
+		o.placeholder = '1080';
 		o.rmempty = false;
 
 		// Proxy Type
@@ -84,6 +86,18 @@ return L.view.extend({
 		o = s.option(form.Value, 'password', _('Authentication Password'), _('Leave blank if authentication is not required.'));
 		o.password = true;
 		o.rmempty = true;
+
+		// Direct Connection (Bypass) Settings Section
+		s = m.section(form.NamedSection, 'connection', 'redsocks', _('Direct Connection (Bypass) Settings'));
+		s.anonymous = true;
+
+		o = s.option(form.DynamicList, 'bypass_domain', _('Bypass Domains'), _('Direct connection for specific domains (e.g. facebook.com).'));
+		o.datatype = 'host';
+		o.placeholder = 'wise.com';
+
+		o = s.option(form.DynamicList, 'bypass_ip', _('Bypass IPs / Subnets'), _('Direct connection for specific IPs or subnets (e.g. 172.16.50.7 or 192.168.100.0/24).'));
+		o.datatype = 'ipaddr';
+		o.placeholder = '172.16.50.7';
 
 		// Local / Redirection Settings Section
 		s = m.section(form.NamedSection, 'connection', 'redsocks', _('Advanced / Redirection Settings'));
@@ -105,18 +119,6 @@ return L.view.extend({
 		o = s.option(form.Value, 'interface', _('Redirect Interface'), _('LAN interface to capture outbound traffic from. (Default: br-lan)'));
 		o.default = 'br-lan';
 		o.rmempty = false;
-
-		// Direct Connection (Bypass) Settings Section
-		s = m.section(form.NamedSection, 'connection', 'redsocks', _('Direct Connection (Bypass) Settings'));
-		s.anonymous = true;
-
-		o = s.option(form.DynamicList, 'bypass_domain', _('Bypass Domains'), _('Direct connection for specific domains (e.g. facebook.com).'));
-		o.datatype = 'host';
-		o.placeholder = 'wise.com';
-
-		o = s.option(form.DynamicList, 'bypass_ip', _('Bypass IPs / Subnets'), _('Direct connection for specific IPs or subnets (e.g. 172.16.50.7 or 192.168.100.0/24).'));
-		o.datatype = 'ipaddr';
-		o.placeholder = '172.16.50.7';
 
 		return m.render();
 	}
