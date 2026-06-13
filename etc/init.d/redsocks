@@ -58,6 +58,10 @@ EOF
 	return 0
 }
 
+add_bypass_rule() {
+	[ -n "$1" ] && iptables -t nat -A REDSOCKS -d "$1" -j RETURN
+}
+
 iptable_start() {
 	local local_port interface
 	config_load redsocks
@@ -81,6 +85,10 @@ iptable_start() {
 	iptables -t nat -A REDSOCKS -d 192.168.0.0/16 -j RETURN
 	iptables -t nat -A REDSOCKS -d 224.0.0.0/4 -j RETURN
 	iptables -t nat -A REDSOCKS -d 240.0.0.0/4 -j RETURN
+
+	# Custom direct connections (bypass rules)
+	config_list_foreach connection bypass_domain add_bypass_rule
+	config_list_foreach connection bypass_ip add_bypass_rule
 
 	# Redirect everything else to local redsocks port
 	iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports "$local_port"

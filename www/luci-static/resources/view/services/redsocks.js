@@ -106,6 +106,18 @@ return L.view.extend({
 		o.default = 'br-lan';
 		o.rmempty = false;
 
+		// Direct Connection (Bypass) Settings Section
+		s = m.section(form.NamedSection, 'connection', 'redsocks', _('Direct Connection (Bypass) Settings'));
+		s.anonymous = true;
+
+		o = s.option(form.DynamicList, 'bypass_domain', _('Bypass Domains'), _('Direct connection for specific domains (e.g. facebook.com).'));
+		o.datatype = 'host';
+		o.placeholder = 'wise.com';
+
+		o = s.option(form.DynamicList, 'bypass_ip', _('Bypass IPs / Subnets'), _('Direct connection for specific IPs or subnets (e.g. 172.16.50.7 or 192.168.100.0/24).'));
+		o.datatype = 'ipaddr';
+		o.placeholder = '172.16.50.7';
+
 		return m.render();
 	}
 });
