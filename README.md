@@ -135,6 +135,16 @@ By encrypting DNS requests over HTTPS (TCP port 443), they are automatically cap
    /etc/init.d/https-dns-proxy start
    ```
 
+* **To Disable**: Stop and disable the DoH service:
+  ```bash
+  /etc/init.d/https-dns-proxy stop
+  /etc/init.d/https-dns-proxy disable
+  ```
+* **To Uninstall**: Completely remove the package:
+  ```bash
+  opkg remove https-dns-proxy
+  ```
+
 ### B. Prevent WebRTC Leaks (Block WAN UDP)
 Force browsers to fall back to secure TCP connections for WebRTC by blocking outgoing UDP traffic from client devices (except standard DNS on port 53 and NTP time sync on port 123):
 1. Navigate to **Network** -> **Firewall** -> **Custom Rules** in LuCI (or edit `/etc/firewall.user`).
@@ -144,3 +154,12 @@ Force browsers to fall back to secure TCP connections for WebRTC by blocking out
    iptables -I FORWARD -i br-lan -o wan -p udp --dport ! 53 --dport ! 123 -j REJECT
    ```
    *(Note: This rule will block UDP-based online multiplayer games. Skip this step if you play games that require UDP).*
+3. Restart the firewall to apply:
+   ```bash
+   /etc/init.d/firewall restart
+   ```
+
+* **To Disable / Uninstall**: Remove the `iptables` line from your custom rules list and restart the firewall:
+  ```bash
+  /etc/init.d/firewall restart
+  ```
