@@ -1,5 +1,3 @@
-[![Server Status](https://uptime.betterstack.com/status-badges/v1/monitor/wayd.svg)](https://status.emon.one)
-
 # Redsocks OpenWRT with LuCI Web UI
 
 Redsocks is a transparent TCP-to-SOCKS redirector proxy client. This project provides a simple script and configuration setup to easily run Redsocks on an OpenWRT router, complete with a modern **LuCI Web UI** interface (for OpenWrt 21.02+ / 22.03+ / 23.05+). 
