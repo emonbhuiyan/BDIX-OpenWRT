@@ -132,17 +132,18 @@ If you want to secure these leaks, you can implement these optional, non-intrusi
 ### A. Prevent DNS Leaks (DNS-over-HTTPS)
 By encrypting DNS requests over HTTPS (TCP port 443), they are automatically captured by BDIX and securely routed through your SOCKS5 proxy:
 1. SSH into your router and install the lightweight DoH client:
-  **For OpenWrt 24.10 and older (using  opkg ):**
-   ```bash
-   opkg update
-   opkg install https-dns-proxy
-   ```
+
+  - **For OpenWrt 24.10 and older (using  opkg ):**
+    ```bash
+    opkg update
+    opkg install https-dns-proxy
+    ```
   
-  **For OpenWrt 25.12 and newer (using  apk ):**
-  ```bash
-  apk update
-  apk add https-dns-proxy
-  ```
+  - **For OpenWrt 25.12 and newer (using  apk ):**
+    ```bash
+    apk update
+    apk add https-dns-proxy
+    ```
 
 2. Enable and start the service:
    ```bash
@@ -156,15 +157,16 @@ By encrypting DNS requests over HTTPS (TCP port 443), they are automatically cap
   /etc/init.d/https-dns-proxy disable
   ```
 * **To Uninstall**: Completely remove the package:
-  **For OpenWrt 24.10 and older (using  opkg ):**
-  ```bash
-  opkg remove https-dns-proxy
-  ```
 
-  **For OpenWrt 25.12 and newer (using  apk ):**
-  ```bash
-  apk del https-dns-proxy
-  ```
+  - **For OpenWrt 24.10 and older (using  opkg ):**
+    ```bash
+    opkg remove https-dns-proxy
+    ```
+
+  - **For OpenWrt 25.12 and newer (using  apk ):**
+    ```bash
+    apk del https-dns-proxy
+    ```
 
 ### B. Prevent WebRTC Leaks (Block WAN UDP)
 Force browsers to fall back to secure TCP connections for WebRTC by blocking outgoing UDP traffic from client devices (except standard DNS on port 53 and NTP time sync on port 123):
