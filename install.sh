@@ -24,6 +24,32 @@ log_warn() {
 	printf "${YELLOW}${BOLD}⚠ [WARN]${NC} %s\n" "$1"
 }
 
+pkg_update() {
+	if command -v opkg >/dev/null 2>&1; then
+		log_info "Updating package database via opkg..."
+		opkg update
+	elif command -v apk >/dev/null 2>&1; then
+		log_info "Updating package database via apk..."
+		apk update
+	else
+		log_warn "Neither opkg nor apk package manager was found!"
+		return 1
+	fi
+}
+
+pkg_install() {
+	if command -v opkg >/dev/null 2>&1; then
+		log_info "Installing packages via opkg..."
+		opkg install "$@"
+	elif command -v apk >/dev/null 2>&1; then
+		log_info "Installing packages via apk..."
+		apk add "$@"
+	else
+		log_warn "Neither opkg nor apk package manager was found! Please manually install dependencies: $*"
+		return 1
+	fi
+}
+
 # Display Header Banner
 printf "${BLUE}======================================================${NC}\n"
 printf "${BLUE}${BOLD}           BDIX OpenWRT & LuCI UI Installer           ${NC}\n"
@@ -31,12 +57,10 @@ printf "${BLUE}======================================================${NC}\n"
 printf "\n"
 
 # 1. Update package manager
-log_info "Updating package database..."
-opkg update
+pkg_update
 
 # 2. Install dependencies
-log_info "Installing core package dependencies..."
-opkg install iptables iptables-mod-nat-extra redsocks
+pkg_install iptables iptables-mod-nat-extra redsocks
 
 # 3. Stop running services if any
 log_info "Cleaning up old service instances..."

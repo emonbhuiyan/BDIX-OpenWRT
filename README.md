@@ -1,6 +1,6 @@
 # BDIX OpenWRT with LuCI Web UI
 
-BDIX Proxy is a transparent TCP-to-SOCKS redirector setup customized for BDIX bypass on OpenWRT. This project provides a simple script and configuration setup to easily run a redirected BDIX proxy client on an OpenWRT router, complete with a modern **LuCI Web UI** interface (for OpenWrt 21.02+ / 22.03+ / 23.05+).
+BDIX Proxy is a transparent TCP-to-SOCKS redirector setup customized for BDIX bypass on OpenWRT. This project provides a simple script and configuration setup to easily run a redirected BDIX proxy client on an OpenWRT router, complete with a modern **LuCI Web UI** interface (for OpenWrt 21.02+ / 22.03+ / 23.05+ / 24.10+ / 25.12+).
 
 It is ideal for routing all LAN traffic through a SOCKS5/SOCKS4 proxy server (e.g., for BDIX bypass configurations).
 
@@ -83,9 +83,17 @@ uci commit bdix
 If you prefer to configure everything manually:
 
 ### Step 1: Update packages and install dependencies
+
+#### For OpenWrt 24.10 and older (using  opkg ):
 ```bash
 opkg update
 opkg install iptables iptables-mod-nat-extra redsocks
+```
+
+#### For OpenWrt 25.12 and newer (using  apk ):
+```bash
+apk update
+apk add iptables iptables-mod-nat-extra redsocks
 ```
 
 ### Step 2: Download configuration and script files
@@ -124,10 +132,18 @@ If you want to secure these leaks, you can implement these optional, non-intrusi
 ### A. Prevent DNS Leaks (DNS-over-HTTPS)
 By encrypting DNS requests over HTTPS (TCP port 443), they are automatically captured by BDIX and securely routed through your SOCKS5 proxy:
 1. SSH into your router and install the lightweight DoH client:
+  **For OpenWrt 24.10 and older (using  opkg ):**
    ```bash
    opkg update
    opkg install https-dns-proxy
    ```
+  
+  **For OpenWrt 25.12 and newer (using  apk ):**
+  ```bash
+  apk update
+  apk add https-dns-proxy
+  ```
+
 2. Enable and start the service:
    ```bash
    /etc/init.d/https-dns-proxy enable
@@ -140,8 +156,14 @@ By encrypting DNS requests over HTTPS (TCP port 443), they are automatically cap
   /etc/init.d/https-dns-proxy disable
   ```
 * **To Uninstall**: Completely remove the package:
+  **For OpenWrt 24.10 and older (using  opkg ):**
   ```bash
   opkg remove https-dns-proxy
+  ```
+
+  **For OpenWrt 25.12 and newer (using  apk ):**
+  ```bash
+  apk del https-dns-proxy
   ```
 
 ### B. Prevent WebRTC Leaks (Block WAN UDP)

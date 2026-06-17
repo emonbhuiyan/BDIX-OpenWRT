@@ -21,6 +21,17 @@ log_warn() {
 	printf "${YELLOW}${BOLD}⚠ [WARN]${NC} %s\n" "$1"
 }
 
+pkg_remove() {
+	if command -v opkg >/dev/null 2>&1; then
+		opkg remove "$1"
+	elif command -v apk >/dev/null 2>&1; then
+		apk del "$1"
+	else
+		log_warn "Neither opkg nor apk package manager was found!"
+		return 1
+	fi
+}
+
 # Display Header Banner
 printf "${YELLOW}======================================================${NC}\n"
 printf "${YELLOW}${BOLD}         BDIX OpenWRT Web UI Uninstaller             ${NC}\n"
@@ -56,9 +67,9 @@ rm -rf /www/luci-static/resources/view/services/bdix.js
 
 # 4. Remove packages if not in use by other services
 log_info "Checking package dependencies for cleanup..."
-# opkg automatically refuses to remove a package if another package depends on it
-opkg remove redsocks || log_warn "Redsocks package skipped (other packages depend on it)."
-opkg remove iptables-mod-nat-extra || log_warn "iptables-mod-nat-extra skipped (other packages depend on it)."
+# Package manager automatically refuses to remove a package if another package depends on it
+pkg_remove redsocks || log_warn "Redsocks package skipped (other packages depend on it)."
+pkg_remove iptables-mod-nat-extra || log_warn "iptables-mod-nat-extra skipped (other packages depend on it)."
 
 # 5. Clear LuCI cache and restart web/rpc services
 log_info "Clearing cache and restarting web/RPC services..."
