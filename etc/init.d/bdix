@@ -8,12 +8,9 @@ USE_PROCD=1
 . /lib/functions.sh
 
 generate_config() {
-	local enabled ip port type login password local_ip local_port
+	local ip port type login password local_ip local_port
 	
 	config_load bdix
-	
-	config_get_bool enabled global enabled 0
-	[ "$enabled" -eq 0 ] && return 1
 
 	config_get ip connection ip
 	config_get port connection port

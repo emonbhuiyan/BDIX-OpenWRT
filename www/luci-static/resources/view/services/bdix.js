@@ -4,55 +4,67 @@
 'require ui';
 
 return L.view.extend({
-	render: function() {
+	load: function() {
+		return Promise.all([
+			L.resolveDefault(fs.exec('/etc/init.d/bdix', ['enabled']), { code: 1 }),
+			L.resolveDefault(fs.exec('/etc/init.d/bdix', ['running']), { code: 1 })
+		]);
+	},
+
+	handleServiceAction: function(action, ev) {
+		return fs.exec('/etc/init.d/bdix', [action]).then(function(res) {
+			if (res.code !== 0)
+				throw new Error((res.stderr || res.stdout || _('Command failed')).trim());
+
+			location.reload();
+		}).catch(function(err) {
+			ui.addTimeLimitedNotification(null,
+				E('p', _('Failed to execute service action: ') + err.message),
+				10000, 'danger');
+		});
+	},
+
+	renderServiceControls: function(isEnabled, isRunning) {
+		var button = L.bind(function(action, label, style, disabled) {
+			return E('button', {
+				'class': 'btn cbi-button-%s'.format(style || 'action'),
+				'click': ui.createHandlerFn(this, 'handleServiceAction', action),
+				'disabled': disabled ? '' : null
+			}, label);
+		}, this);
+
+		return E('div', { 'class': 'cbi-section' }, [
+			E('h3', _('Service Control')),
+
+			E('div', { 'class': 'cbi-value' }, [
+				E('label', { 'class': 'cbi-value-title' }, _('Boot Status')),
+				E('div', { 'class': 'cbi-value-field' }, [
+					button('enable', _('Enable'), 'positive', isEnabled),
+					' ',
+					button('disable', _('Disable'), 'negative', !isEnabled)
+				])
+			]),
+
+			E('div', { 'class': 'cbi-value' }, [
+				E('label', { 'class': 'cbi-value-title' }, _('Service Status')),
+				E('div', { 'class': 'cbi-value-field' }, [
+					button('start', _('Start'), 'positive', isRunning),
+					' ',
+					button('restart', _('Restart'), 'reload', !isRunning),
+					' ',
+					button('stop', _('Stop'), 'negative', !isRunning)
+				])
+			])
+		]);
+	},
+
+	render: function(data) {
 		var m, s, o;
+		var isEnabled = data[0].code === 0;
+		var isRunning = data[1].code === 0;
 
 		m = new form.Map('bdix', _('BDIX Proxy Configuration'),
 			_('Configure transparent redirect routing over SOCKS4/SOCKS5 proxies for BDIX bypass.'));
-
-		// Global Section
-		s = m.section(form.NamedSection, 'global', 'bdix', _('Global Configuration'));
-		s.anonymous = true;
-
-		// Service Enable Switch
-		o = s.option(form.Flag, 'enabled', _('Enable BDIX Service'), _('Start/stop the BDIX proxy daemon.'));
-		o.rmempty = false;
-
-		// Start Button
-		o = s.option(form.Button, '_start', _('Start Service'), _('Manually start the BDIX daemon and apply redirect rules.'));
-		o.inputstyle = 'apply';
-		o.inputtitle = _('Start Service');
-		o.onclick = function(ev) {
-			return fs.exec('/etc/init.d/bdix', ['start']).then(function(res) {
-				ui.addNotification(null, E('p', _('BDIX service started successfully.')), 'info');
-			}).catch(function(err) {
-				ui.addNotification(null, E('p', _('Failed to start BDIX service: ') + err.message), 'danger');
-			});
-		};
-
-		// Stop Button
-		o = s.option(form.Button, '_stop', _('Stop Service'), _('Manually stop the BDIX daemon and flush redirect rules.'));
-		o.inputstyle = 'reset';
-		o.inputtitle = _('Stop Service');
-		o.onclick = function(ev) {
-			return fs.exec('/etc/init.d/bdix', ['stop']).then(function(res) {
-				ui.addNotification(null, E('p', _('BDIX service stopped successfully.')), 'info');
-			}).catch(function(err) {
-				ui.addNotification(null, E('p', _('Failed to stop BDIX service: ') + err.message), 'danger');
-			});
-		};
-
-		// Restart Button
-		o = s.option(form.Button, '_restart', _('Restart Service'), _('Manually restart the BDIX daemon and refresh redirect rules.'));
-		o.inputstyle = 'reload';
-		o.inputtitle = _('Restart Service');
-		o.onclick = function(ev) {
-			return fs.exec('/etc/init.d/bdix', ['restart']).then(function(res) {
-				ui.addNotification(null, E('p', _('BDIX service restarted successfully.')), 'info');
-			}).catch(function(err) {
-				ui.addNotification(null, E('p', _('Failed to restart BDIX service: ') + err.message), 'danger');
-			});
-		};
 
 		// Connection Settings Section
 		s = m.section(form.NamedSection, 'connection', 'bdix', _('Proxy Server Settings'));
@@ -121,6 +133,9 @@ return L.view.extend({
 		o.default = 'br-lan';
 		o.rmempty = false;
 
-		return m.render();
+		return m.render().then(L.bind(function(node) {
+			node.insertBefore(this.renderServiceControls(isEnabled, isRunning), node.firstChild);
+			return node;
+		}, this));
 	}
 });
