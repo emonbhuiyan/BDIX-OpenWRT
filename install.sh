@@ -68,8 +68,8 @@ log_info "Cleaning up old service instances..."
 
 # 4. Backup old configurations if they exist
 log_info "Backing up existing configurations..."
-[ -f /etc/config/bdix ] && mv /etc/config/bdix /etc/config/bdix.bkp
-[ -f /etc/init.d/bdix ] && mv /etc/init.d/bdix /etc/init.d/bdix.bkp
+[ -f /etc/config/redsocks.conf ] && mv /etc/config/redsocks.conf /etc/config/redsocks.conf.bkp
+[ -f /etc/init.d/redsocks ] && mv /etc/init.d/redsocks /etc/init.d/redsocks.bkp
 
 # 5. Download the latest source files as a tarball from GitHub
 log_info "Downloading Web UI components from main branch..."
